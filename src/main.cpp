@@ -3,6 +3,9 @@
 #include "ESP8266WiFi.h"
 #include "WiFiClient.h"
 
+
+WiFiClient tcp_client;
+
 int connect_wifi() {
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
 
