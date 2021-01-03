@@ -57,7 +57,7 @@ void op_tcp_state_machine(uint8_t ins) {
 
 
 void op_tcp_start_handle(uint8_t ins) {
-    //should we check 
+    //should we check
     tcp_state = TCP_STATE_START;
 
     Serial.write(LNC_ERROR_OK);
@@ -100,43 +100,43 @@ void op_tcp_host_handle(uint8_t ins) {
 }
 
 
-void op_tcp_port_handle(uint8_t ins){
+void op_tcp_port_handle(uint8_t ins) {
 
-    if(tcp_state !=  TCP_STATE_HOST){
+    if (tcp_state !=  TCP_STATE_HOST) {
         Serial.write(LNC_ERROR_INVALID_STATE);
         return;
     }
 
     uint8_t port_len = ins & LEFT_4_BITS_MAP;
 
-    if(port_len  > MAX_PORT_LEN){
+    if (port_len  > MAX_PORT_LEN) {
         Serial.write(LNC_ERROR_INVALID_LEN);
         return;
     }
 
-    char port_c[port_len+1];
+    char port_c[port_len + 1];
 
     uint8_t count = 0;
     unsigned long timeout = millis();
-    while(count < port_len){
-        if(millis() - timeout >=  TCP_PORT_SEND_TIMEOUT){
+    while (count < port_len) {
+        if (millis() - timeout >=  TCP_PORT_SEND_TIMEOUT) {
             Serial.write(LNC_ERROR_TIMEOUT);
             return;
         }
 
-        if(Serial.available()){
+        if (Serial.available()) {
             port_c[count] = (char)Serial.read();
             count++;
         }
     }
 
 
-    if(sscanf (port_c, "%" SCNd16 "", &port) <= 0){
+    if (sscanf(port_c, "%" SCNd16 "", &port) <= 0) {
         Serial.write(LNC_ERROR_TCP_INVALID_PORT);
         return;
     }
 
-    if(port < MIN_PORT || port > MAX_PORT){
+    if (port < MIN_PORT || port > MAX_PORT) {
         Serial.write(LNC_ERROR_TCP_INVALID_PORT);
         return;
     }
@@ -150,40 +150,40 @@ void op_tcp_port_handle(uint8_t ins){
 
 void op_tcp_connect_handle(uint8_t ins) {
 
-    if(tcp_state !=  TCP_STATE_PORT){
+    if (tcp_state !=  TCP_STATE_PORT) {
         Serial.write(LNC_ERROR_INVALID_STATE);
         return;
     }
 
-    if(client.connect((const char*)host, port)){
+    if (client.connect((const char*)host, port)) {
         Serial.write(LNC_ERROR_OK);
         tcp_state = TCP_STATE_CONNECTED;
         return;
     }
 
     Serial.write(LNC_ERROR_TCP_CONN);
-    
+
 }
 
-void op_tcp_available_handle(uint8_t ins){
-    if(tcp_state !=  TCP_STATE_CONNECTED){
+void op_tcp_available_handle(uint8_t ins) {
+    if (tcp_state !=  TCP_STATE_CONNECTED) {
         Serial.write(LNC_ERROR_INVALID_STATE);
         return;
     }
 
-    if(!client.connected()){
+    if (!client.connected()) {
         Serial.write(LNC_ERROR_TCP_CONN);
-        return; 
+        return;
     }
 
     int av = client.available();
 
-    if(av < 0){
+    if (av < 0) {
         Serial.write(LNC_ERROR_KO);
-        return;   
+        return;
     }
 
-    if(av > MAX_TCP_AVAILABLE){
+    if (av > MAX_TCP_AVAILABLE) {
         Serial.write(MAX_TCP_AVAILABLE);
         return;
     }
@@ -193,44 +193,44 @@ void op_tcp_available_handle(uint8_t ins){
 }
 
 
-void op_tcp_send_handle(uint8_t ins){
+void op_tcp_send_handle(uint8_t ins) {
 
-    if(tcp_state !=  TCP_STATE_CONNECTED){
+    if (tcp_state !=  TCP_STATE_CONNECTED) {
         Serial.write(LNC_ERROR_INVALID_STATE);
         return;
     }
 
-    if(!client.connected()){
+    if (!client.connected()) {
         Serial.write(LNC_ERROR_TCP_CONN);
-        return; 
+        return;
     }
 
     uint8_t send_len = ins & LEFT_4_BITS_MAP;
 
-    if(send_len  > MAX_TCP_SEND){
+    if (send_len  > MAX_TCP_SEND) {
         Serial.write(LNC_ERROR_INVALID_LEN);
         return;
     }
 
-    char send_buffer[send_len+1];
+    char send_buffer[send_len + 1];
 
     uint8_t count = 0;
     unsigned long timeout = millis();
-    while(count < send_len){
-        if(millis() - timeout >= TCP_SEND_TIMEOUT){
+    while (count < send_len) {
+        if (millis() - timeout >= TCP_SEND_TIMEOUT) {
             Serial.write(LNC_ERROR_TIMEOUT);
             return;
         }
 
-        if(Serial.available()){
+        if (Serial.available()) {
             send_buffer[count] = Serial.read();
             count++;
         }
     }
 
     size_t sent = client.write((const char*)send_buffer, (size_t)send_len);
-    
-    if(sent == 0 || sent > (size_t)send_len){
+
+    if (sent == 0 || sent > (size_t)send_len) {
         Serial.write(LNC_ERROR_TCP_SEND);
         return;
     }
@@ -242,50 +242,50 @@ void op_tcp_send_handle(uint8_t ins){
 
 
 
-void op_tcp_recv_handle(uint8_t ins){
+void op_tcp_recv_handle(uint8_t ins) {
 
-    if(tcp_state !=  TCP_STATE_CONNECTED){
+    if (tcp_state !=  TCP_STATE_CONNECTED) {
         Serial.write(LNC_ERROR_INVALID_STATE);
         return;
     }
 
-    if(!client.connected()){
+    if (!client.connected()) {
         Serial.write(LNC_ERROR_TCP_CONN);
-        return; 
+        return;
     }
 
     uint8_t read_len = ins & LEFT_4_BITS_MAP;
 
-    if(read_len  > MAX_TCP_AVAILABLE){
+    if (read_len  > MAX_TCP_AVAILABLE) {
         Serial.write(LNC_ERROR_INVALID_LEN);
         return;
     }
 
     int av = client.available();
     //no data to read
-    if(av <= 0){
+    if (av <= 0) {
         Serial.write(0);
-        return;   
+        return;
     }
 
-    if(av > MAX_TCP_AVAILABLE){
+    if (av > MAX_TCP_AVAILABLE) {
         av = MAX_TCP_AVAILABLE;
     }
 
-    if(read_len > av){
+    if (read_len > av) {
         read_len = av;
     }
 
-    char recv_buffer[read_len+1];
+    char recv_buffer[read_len + 1];
 
     int read = client.read((uint8_t*)recv_buffer, (size_t)read_len);
-    
-    if(read > read_len || read < 0){
+
+    if (read > read_len || read < 0) {
         Serial.write(LNC_ERROR_TCP_RECV);
         return;
     }
 
-    if((uint8_t)read !=  read_len){
+    if ((uint8_t)read !=  read_len) {
         read_len = (uint8_t)read;
     }
 
@@ -295,7 +295,7 @@ void op_tcp_recv_handle(uint8_t ins){
 
 }
 
-void op_tcp_stop_handle(uint8_t ins){
+void op_tcp_stop_handle(uint8_t ins) {
 
     client.stop();
 
