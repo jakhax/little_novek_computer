@@ -54,8 +54,8 @@ while True:
     write_pin(PIN, s)
     time.sleep(1)
     s = 1 if s == 0 else 0
-    read_pin(5)
-    time.sleep(1)
+    # read_pin(5)
+    # time.sleep(1)
     
 
     

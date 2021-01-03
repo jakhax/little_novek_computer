@@ -1,10 +1,9 @@
 #include "common.h"
-#include "op_codes.h"
 #include "ESP8266WiFi.h"
-#include "WiFiClient.h"
+#include "op_codes.h"
+#include "tcp.h"
+#include "gpio.h"
 
-
-WiFiClient tcp_client;
 
 int connect_wifi() {
     WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
@@ -14,35 +13,17 @@ int connect_wifi() {
         if (millis() - timeout > 300000) {
             return -1;
         }
+        delay(100);
     }
 
     return 0;
 }
 
 
-void op_gpio_out_handle(uint8_t op) {
-    uint8_t pin = (op & 15) >> 1;
-    uint8_t state = op & 1;
-    pinMode(pin, OUTPUT);
-    digitalWrite(pin, state);
-    Serial.write(LNC_ERROR_OK);
-}
-
-
-void op_gpio_in_handle(uint8_t op) {
-    uint8_t pin = (op & 15) >> 1;
-    pinMode(pin, INPUT);
-    uint8_t state = (uint8_t)digitalRead(pin);
-    Serial.write(state);
-}
-
-
 void setup() {
     Serial.begin(115200);
-    pinMode(2, OUTPUT);
-    pinMode(5, INPUT);
+    setup_gpio_pins();
     connect_wifi();
-
 }
 
 void loop() {
@@ -54,6 +35,8 @@ void loop() {
     }
 
     if (!Serial.available()) {
+        // Serial.write(LNC_OP_POLL);
+        delay(10);
         return;
     }
 
@@ -72,6 +55,8 @@ void loop() {
             break;
 
         default:
+            op_tcp_state_machine(ins);
             break;
     }
 }
+
