@@ -7,7 +7,7 @@ LNC is a simple virtual machine i designed to:
 - Help interns learn a few things about computers.
 - Interview problem for embedded engineers prospect.
 
-The emulator runs on an ESP8266, instructions are sent to the VM at runtime via UART.
+The virtual machine runs on an ESP8266, instructions are sent to the VM at runtime via UART.
 
 ## Examples / Solutions
 
