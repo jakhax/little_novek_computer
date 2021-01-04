@@ -5,7 +5,7 @@
 
 #define LEFT_4_BITS_MAP 15
 
-typedef enum lnc_ops {
+typedef enum lnc_op {
     LNC_OP_GPIO_OUT = 0,
     LNC_OP_GPIO_IN,
     LNC_OP_TCP_START,
@@ -19,7 +19,7 @@ typedef enum lnc_ops {
     //used to poll the connected device for instructions
     LNC_OP_POLL = 255,
 
-} lnc_ops_t;
+} lnc_op_t;
 
 //return values 201 -254 reserved for error messages
 

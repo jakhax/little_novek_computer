@@ -25,7 +25,7 @@ void setup() {
     Serial.begin(115200);
 
     setup_gpio_pins();
-    
+
     connect_wifi();
 }
 
