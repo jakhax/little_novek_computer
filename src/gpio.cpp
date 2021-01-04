@@ -41,6 +41,7 @@ static bool validate_pin(uint8_t pin, uint8_t mode) {
 }
 
 void op_gpio_out_handle(uint8_t op) {
+
     uint8_t pin = (op & LEFT_4_BITS_MAP) >> 1;
 
     if (!validate_pin(pin, OUTPUT)) {

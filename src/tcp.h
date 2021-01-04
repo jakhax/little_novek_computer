@@ -12,7 +12,7 @@
 #define MIN_PORT 1
 #define MAX_PORT 65535
 
-#define MAX_TCP_AVAILABLE 200 //201 -254 reserved for error messages, 255 for polling
+#define MAX_TCP_AVAILABLE 15
 #define MAX_TCP_SEND 15
 #define MAX_TCP_READ MAX_TCP_AVAILABLE
 
@@ -74,13 +74,9 @@ void op_tcp_available_handle(uint8_t ins);
 void op_tcp_send_handle(uint8_t ins);
 
 
-
 /**
  * receives data from a tcp server
- * can receive a maximum of MAX_TCP_AVAILABLE bytes per call
- * make sure to check number of bytes available before calling
- * will first send number of bytes available to writing before writing
- * the actual bytes and terminating with a LNC_ERROR_OK
+ * can receive a maximum of MAX_TCP_READ bytes per call
  * if not data is available for receiving it will send a 0 and exit
  * if an error occurs during reading it will send the error instead
  */

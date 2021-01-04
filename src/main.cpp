@@ -21,8 +21,11 @@ int connect_wifi() {
 
 
 void setup() {
+
     Serial.begin(115200);
+
     setup_gpio_pins();
+    
     connect_wifi();
 }
 
@@ -35,7 +38,6 @@ void loop() {
     }
 
     if (!Serial.available()) {
-        // Serial.write(LNC_OP_POLL);
         delay(10);
         return;
     }
@@ -58,5 +60,6 @@ void loop() {
             op_tcp_state_machine(ins);
             break;
     }
+
 }
 

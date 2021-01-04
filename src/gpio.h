@@ -11,12 +11,14 @@
  */
 void op_gpio_out_handle(uint8_t op);
 
+
 /**
  * handles gpio in (digitalRead())
  * on success writes 0 or 1 depending on state of pin
  * on error approprite error is written
  */
 void op_gpio_in_handle(uint8_t op);
+
 
 /**
  * setups input and output gpio pins
