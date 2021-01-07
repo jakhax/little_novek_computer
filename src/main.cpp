@@ -31,11 +31,11 @@ void setup() {
 
 void loop() {
 
-    if (WiFi.status() !=  WL_CONNECTED) {
-        if (connect_wifi() != 0) {
-            return;
-        }
-    }
+    // if (WiFi.status() !=  WL_CONNECTED) {
+    //     if (connect_wifi() != 0) {
+    //         return;
+    //     }
+    // }
 
     if (!Serial.available()) {
         delay(10);

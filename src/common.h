@@ -3,8 +3,8 @@
 
 #include <Arduino.h>
 
-#define WIFI_SSID "C.I.A Surveillance Van"
-#define WIFI_PASSWORD "1Ax8IXdbX3h5"
+#define WIFI_SSID "ZUKU WIFI"
+#define WIFI_PASSWORD "zuku4321"
 
 
 #endif
