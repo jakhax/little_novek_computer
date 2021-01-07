@@ -135,7 +135,9 @@ In case of an invalid pin , the error `LNC_ERROR_INVALID_GPIO_PIN` is sent back 
 [RX]<- 11001011 // 203 - LNC_ERROR_INVALID_GPIO_PIN
 ```
 
-## Task 
+>> Feel free to go through the VM's firmware to understand the working of the rest of the opcodes, they are not required for solving the main task.
+
+## Task 1 (Required)
 
 Write a piece of code for the LNC that will toggle LEDs connected to the 3 input pins at the interval shown in the Pseudocode below
 
@@ -162,4 +164,22 @@ int main(){
 
 You are allowed to use any personal microcontroller, or the ones provided to you (Arduino Mega, Nucleo STM32F429zi)  or serial communication directly from your PC to solve the problem. Do not alter the provided circuit, this task 
 
-Feel free to ask questions or ask to be provided with materials
+Feel free to ask questions or ask to be provided with materials. You will need a minimum of
+
+- LNC (Esp8266 with VM)
+- 3 blue LEDs with appropriate resistors
+- Microcontroller (Arduino Mega 2560 or Nucleo STM32F429Zi)
+
+## Task 2 (optional)
+
+Go through the VM's code to understand the TCP stack op codes
+
+Write code that get's the challenge description from the previous challenge [Decompress Me](https://gist.github.com/jakhax/23769ab61326ef4c9e60117e17a5b214)
+
+Note that attempting this challenge does not give you additional points but would be great to see your attempt.
+
+## Submission
+
+Send the link to your [public repository](https://guides.github.com/activities/hello-world/) containing your work via email.
+
+If you are unable to use version control, you can put your work in a compressed folder and attach it to your email, note use of version control is also assessed.
